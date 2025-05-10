@@ -10,9 +10,11 @@
 
 ## Cel projektu
 
-Celem projektu jest stworzenie klasyfikatora obrazów jedzenia.
+Celem projektu FoodVision101 jest stworzenie modelu klasyfikującego obrazy jedzenia z wykorzystaniem transfer learningu w TensorFlow. Model został wytrenowany na 10% danych z zestawu Food101, zawierającego 101 kategorii dań.
 
-Projekt został zrealizowany w ramach pracy dyplomowej.
+Zastosowanie wcześniej wytrenowanych konwolucyjnych sieci neuronowych (np. EfficientNet) umożliwiło skuteczne dostosowanie modelu do zadania klasyfikacji bez potrzeby trenowania od zera.
+
+Projekt powstał w ramach pracy dyplomowej i stanowi praktyczne zastosowanie metod uczenia maszynowego w obszarze computer vision.
 
 ---
 
