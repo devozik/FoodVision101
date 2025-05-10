@@ -1,10 +1,10 @@
 # FoodVision101
 
-**Autor:** Igor Bartkowski
-**Kierunek:** Data Scientist. Analityk Danych
-**Uczelnia:** WSB Merito Gdańsk 
-**Promotor:** Dr Krzysztof Ziółkowski 
-**Data:** Maj 2025
+- **Autor:** Igor Bartkowski
+- **Kierunek:** Data Scientist. Analityk Danych
+- **Uczelnia:** WSB Merito Gdańsk
+- **Promotor:** Dr Krzysztof Ziółkowski
+- **Data:** Maj 2025
 
 ---
 
