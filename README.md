@@ -1,4 +1,4 @@
-# Tytuł projektu
+# FoodVision101
 
 **Autor:** Igor Bartkowski
 **Kierunek:** Data Scientist. Analityk Danych
