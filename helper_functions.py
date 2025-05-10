@@ -1,9 +1,14 @@
-### We create a bunch of helpful functions throughout the course.
-### Storing them here so they're easily accessible.
-
+import itertools
+from sklearn.metrics import confusion_matrix
+import zipfile
+import datetime
+import seaborn as sns
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
 import tensorflow as tf
+import numpy as np
 
-# Create a function to import an image and resize it to be able to be used with our model
 def load_and_prep_image(filename, img_shape=300, scale=True):
   """
   Reads in an image from filename, turns it into a tensor and reshapes into
@@ -15,26 +20,15 @@ def load_and_prep_image(filename, img_shape=300, scale=True):
   img_shape (int): size to resize target image to, default 224
   scale (bool): whether to scale pixel values to range(0, 1), default True
   """
-  # Read in the image
   img = tf.io.read_file(filename)
-  # Decode it into a tensor
   img = tf.image.decode_jpeg(img)
-  # Resize the image
   img = tf.image.resize(img, [img_shape, img_shape])
   if scale:
-    # Rescale the image (get all values between 0 and 1)
     return img/255.
   else:
     return img
 
-# Note: The following confusion matrix code is a remix of Scikit-Learn's 
-# plot_confusion_matrix function - https://scikit-learn.org/stable/modules/generated/sklearn.metrics.plot_confusion_matrix.html
-import itertools
-import matplotlib.pyplot as plt
-import numpy as np
-from sklearn.metrics import confusion_matrix
 
-# Our function needs a different name to sklearn's plot_confusion_matrix
 def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15, norm=False, savefig=False): 
   """Makes a labelled confusion matrix comparing predictions and ground truth labels.
 
@@ -59,11 +53,10 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
                           classes=class_names, # array of class label names
                           figsize=(15, 15),
                           text_size=10)
-  """  
-  # Create the confustion matrix
+  """
   cm = confusion_matrix(y_true, y_pred)
-  cm_norm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis] # normalize it
-  n_classes = cm.shape[0] # find the number of classes we're dealing with
+  cm_norm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+  n_classes = cm.shape[0]
 
   fig, ax = plt.subplots(figsize=figsize)
   cax = ax.matshow(cm, cmap=plt.cm.Blues)
@@ -73,8 +66,7 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
     labels = classes
   else:
     labels = np.arange(cm.shape[0])
-  
-  # Label the axes
+
   ax.set(title="Confusion Matrix",
          xlabel="Predicted label",
          ylabel="True label",
@@ -109,8 +101,8 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
   # Save the figure to the current working directory
   if savefig:
     fig.savefig("confusion_matrix.png")
-  
-# Make a function to predict on images and plot them (works with multi-class)
+
+
 def pred_and_plot(model, filename, class_names):
   """
   Imports an image located at filename, makes a prediction on it with
@@ -133,7 +125,6 @@ def pred_and_plot(model, filename, class_names):
   plt.title(f"Prediction: {pred_class}")
   plt.axis(False);
   
-import datetime
 
 def create_tensorboard_callback(dir_name, experiment_name):
   """
@@ -153,8 +144,6 @@ def create_tensorboard_callback(dir_name, experiment_name):
   print(f"Saving TensorBoard log files to: {log_dir}")
   return tensorboard_callback
 
-# Plot the validation and training data separately
-import matplotlib.pyplot as plt
 
 def plot_loss_curves(history):
     """
@@ -188,8 +177,6 @@ def plot_loss_curves(history):
     plt.xlabel('Epochs')
     plt.legend();
 
-import seaborn as sns
-import pandas as pd
 
 def plot_loss_curves_sns(history):
     """
@@ -227,6 +214,7 @@ def plot_loss_curves_sns(history):
 
     plt.tight_layout()
     plt.show()
+
 
 def compare_historys(original_history, new_history, initial_epochs=5):
     """
@@ -271,10 +259,7 @@ def compare_historys(original_history, new_history, initial_epochs=5):
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
     plt.show()
-  
-# Create function to unzip a zipfile into current working directory 
-# (since we're going to be downloading and unzipping a few files)
-import zipfile
+
 
 def unzip_data(filename):
   """
@@ -287,9 +272,6 @@ def unzip_data(filename):
   zip_ref.extractall()
   zip_ref.close()
 
-# Walk through an image classification directory and find out how many files (images)
-# are in each subdirectory.
-import os
 
 def walk_through_dir(dir_path):
   """
@@ -322,7 +304,7 @@ def calculate_results(y_true, y_pred):
   """
   # Calculate model accuracy
   model_accuracy = accuracy_score(y_true, y_pred) * 100
-  # Calculate model precision, recall and f1 score using "weighted average
+  # Calculate model precision, recall and f1 score using weighted average
   model_precision, model_recall, model_f1, _ = precision_recall_fscore_support(y_true, y_pred, average="weighted")
   model_results = {"accuracy": model_accuracy,
                   "precision": model_precision,
@@ -330,10 +312,6 @@ def calculate_results(y_true, y_pred):
                   "f1": model_f1}
   return model_results
 
-
-import matplotlib.pyplot as plt
-import tensorflow as tf
-import numpy as np
 
 def plot_random_images_from_directory(directory, num_images=9, img_size=(224, 224)):
     dataset = tf.keras.preprocessing.image_dataset_from_directory(
@@ -364,6 +342,7 @@ def plot_random_images_from_directory(directory, num_images=9, img_size=(224, 22
 
     plt.tight_layout()
     plt.show()
+
 
 def plot_augmented_image(train_data, data_augmentation):
     for images, labels in train_data.take(1):
